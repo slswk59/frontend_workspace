@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css_027_position.html</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        border-width: 0;
+      }
+
+      .box1 {
+        width: 500px;
+        height: 100px;
+        background-color: black;
+      }
+
+      .box2 {
+        width: 500px;
+        height: 200px;
+        background-color: yellow;
+        position: relative;
+      }
+
+      .box3 {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: absolute;
+        left: 50px;
+        top: 50px;
+      }
+
+      .box4 {
+        width: 100px;
+        height: 100px;
+        background-color: green;
+        position: relative;
+        left: 200px;
+        top: 0px;
+      }
+
+      .box5 {
+        width: 100px;
+        height: 500px;
+        background-color: aqua;
+        position: fixed;
+        right: 10px;
+        top: 50px;
+      }
+
+      .box6 {
+        width: 800px;
+        height: 200px;
+        background-color: orange;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+        포지션(position 속성)
+        1. position은 박스에 대한 배치를 변경할 때 사용한다.
+        2. position의 값으로 static, absolute, relative, fixed 등이 있다.
+        3. static : 순서에 의한 기본 위치를 변경한다.
+           absolute :부모 요소를 기준으로 위치를 변경한다. (원래의 위치값을 잃는다.)
+           relative :자기 자신을 기준으로 위치를 변경한다. (원래의 위치값을 가지고 있다.)
+           fixed : 스크린을 기준으로 위치를 지정한다. (원래의 위치값을 잃는다.)
+        4. absolute의 위치 지정
+           부모요소의 position이 static 이면 기준점이 body가 된다.
+           부모요소의 position이 absolute, fixed, relative이면 기준점이 부모요소이다.   
+    -->
+    <div class="box1"></div>
+    <div class="box2">
+      <div class="box3"></div>
+      <div class="box4"></div>
+      <p>요소들의 위치 변경</p>
+    </div>
+    <div class="box5"></div>
+    <div class="box6">
+      이씨는 지난해 8월부터 11월경까지 전국 638개 아파트 단지 내 월패드
+      중앙관리하는 서버와 40만 가구에 설치된 월패드를 차례로 해킹해 영상을 몰래
+      촬영한 후, 영상 일부를 유출하는 등 정보통신망법을 위반한 혐의를 받고 있다.
+      이씨는 과거 한 방송에 '보안전문가'로 소개돼 월패드와 관련된 취약점을
+      설명한 것으로 알려졌다. 경찰청에 따르면 이씨는 고등학생 때 보안회사에서
+      아르바이트를 한 이력이 있으며, 대학교에서 정보보호학을 전공했다. 과거
+      디도스 및 해킹 관련해 2건의 전과 이력도 확인됐다. 이씨는 자동화된 해킹
+      프로그램을 직접 제작하고, 추적우회 수법과 보안 이메일 등을 자유롭게
+      사용하는 등 상당한 IT보안 지식을 가진 것으로 알려졌다. 이씨의 범행 과정은
+      치밀했다. 수사기관의 추적을 회피하기 위해 식당·숙박업소 등 사람들이 쉽게
+      접근할 수 있는 다중 이용시설 등에 설치된 무선공유기를 해킹해 범죄에
+      악용했다. 또한 가입 시 실명 인증이 필요 없는 해외 보안 이메일 및 파일 공유
+      서비스를 사용했다.
+    </div>
+
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+  </body>
+</html>
