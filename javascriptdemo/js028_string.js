@@ -12,8 +12,8 @@ protocal: http, domain : www.daum.net
 //separator() 함수정의
 
 //////////
-separator('http://www.daum.net');
-separator('ftp://ftp.microsoft.com');
+// separator('http://www.daum.net');
+// separator('ftp://ftp.microsoft.com');
 
 ///////////////////////////////////////////////////////////////
 /*
