@@ -86,7 +86,7 @@ pageEncoding="UTF-8"%>
               <ul class="cart_goodslist">
                 <li class="cart_goodslist">
                   <label class="all_choose2">
-                    <input type="checkbox" class="goods_checkbox" checked />
+                    <input type="checkbox" class="all_choose2_checkbox" checked />
                     <div class="check_icon_group">
                       <!--<svg
                         width="24"
@@ -154,7 +154,7 @@ pageEncoding="UTF-8"%>
                 </li>
                 <li class="cart_goodslist">
                   <label class="all_choose2_1">
-                    <input type="checkbox" class="goods_checkbox" checked />
+                    <input type="checkbox" class="all_choose2_1_checkbox" checked />
                     <div class="check_icon_group">
                       <!--<svg
                         width="24"
@@ -222,7 +222,7 @@ pageEncoding="UTF-8"%>
                 </li>
                 <li class="cart_goodslist">
                   <label class="all_choose2_2">
-                    <input type="checkbox" class="goods_checkbox" checked />
+                    <input type="checkbox" class="all_choose2_2_checkbox" checked />
                     <div class="check_icon_group">
                       <!--<svg
                         width="24"
