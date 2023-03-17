@@ -80,13 +80,13 @@ pageEncoding="UTF-8"%>
                 <span class="all_choose">전체선택</span>
               </label>
               <span class="l"></span>
-              <button class="all_reset">선택삭제</button>
+              <button class="select_delete">선택삭제</button>
             </div>
             <div class="cart_goodslist">
               <ul class="cart_goodslist">
                 <li class="cart_goodslist">
                   <label class="all_choose2">
-                    <input type="checkbox" class="all_choose2_checkbox" checked />
+                    <input type="checkbox" class="choose_checkbox" checked />
                     <div class="check_icon_group">
                       <!--<svg
                         width="24"
@@ -154,7 +154,7 @@ pageEncoding="UTF-8"%>
                 </li>
                 <li class="cart_goodslist">
                   <label class="all_choose2_1">
-                    <input type="checkbox" class="all_choose2_1_checkbox" checked />
+                    <input type="checkbox" class="choose_checkbox" checked />
                     <div class="check_icon_group">
                       <!--<svg
                         width="24"
@@ -222,7 +222,7 @@ pageEncoding="UTF-8"%>
                 </li>
                 <li class="cart_goodslist">
                   <label class="all_choose2_2">
-                    <input type="checkbox" class="all_choose2_2_checkbox" checked />
+                    <input type="checkbox" class="choose_checkbox" checked />
                     <div class="check_icon_group">
                       <!--<svg
                         width="24"
