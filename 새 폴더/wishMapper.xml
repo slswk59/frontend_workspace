@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wish">
-    
-    <!-- Select all wish items of a member -->
-<select id="selectWishList" resultType="WishDTO" parameterType="String">
-	SELECT *
-	FROM wish
-	WHERE member_id = #{member_id}
-</select>
-    
-    <!-- Insert a new wish item -->
-<insert id="insertWish" parameterType="WishDTO">
-	INSERT INTO wish(product_id, member_id, product_name, price, image)
-	VALUES(#{product_id}, #{member_id}, #{product_name}, #{price}, #{image})
-</insert>
-    
-    <!-- Delete a wish item -->
-<delete id="deleteWish" parameterType="int">
-	DELETE FROM wish
-	WHERE wish_key = #{wish_key}
-</delete>
-    
+
+    <resultMap id="wishResultMap" type="WishDTO">
+        <id property="wish_key" column="wish_key"/>
+        <result property="id" column="id"/>
+        <result property="product_key" column="product_key"/>
+        <result property="wish_date" column="wish_date"/>
+    </resultMap>
+
+    <!-- 1. 유저별 찜 목록 조회 -->
+    <select id="selectWishList" resultMap="wishResultMap">
+        SELECT *
+        FROM wish
+        WHERE id=#{id}
+    </select>
+
+    <!-- 2. 찜 목록에 있는 데이터를 담기 버튼 클릭 시 cart 테이블에 추가 -->
+    <insert id="insertCart" parameterType="shopping.dto.WishDTO">
+        INSERT INTO cart (id, product_key, amount, cart_date)
+        VALUES (#{id}, #{product_key}, 1, NOW())
+    </insert>
+
+    <!-- 3. 찜 목록에서 데이터 삭제 -->
+    <delete id="deleteWish" parameterType="int">
+        DELETE FROM wish
+        WHERE wish_key=#{wish_key}
+    </delete>
+
 </mapper>
