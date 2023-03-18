@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="wish">
+    
+    <!-- Select all wish items of a member -->
+<select id="selectWishList" resultType="WishDTO" parameterType="String">
+	SELECT *
+	FROM wish
+	WHERE member_id = #{member_id}
+</select>
+    
+    <!-- Insert a new wish item -->
+<insert id="insertWish" parameterType="WishDTO">
+	INSERT INTO wish(product_id, member_id, product_name, price, image)
+	VALUES(#{product_id}, #{member_id}, #{product_name}, #{price}, #{image})
+</insert>
+    
+    <!-- Delete a wish item -->
+<delete id="deleteWish" parameterType="int">
+	DELETE FROM wish
+	WHERE wish_key = #{wish_key}
+</delete>
+    
+</mapper>
