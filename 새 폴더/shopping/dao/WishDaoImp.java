@@ -1,34 +1,43 @@
 package shopping.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 
 import shopping.dto.WishDTO;
 
 public class WishDaoImp implements WishDAO {
-    
+
     private SqlSession sqlSession;
 
-    public WishDaoImp(SqlSession sqlSession) {
+    public void setSqlSession(SqlSessionTemplate sqlSession) {
         this.sqlSession = sqlSession;
     }
 
-    // 해당 회원의 찜 목록 조회
     @Override
-    public List<WishDTO> selectWishListByMemberId(String memberId) {
-        return sqlSession.selectList("shopping.dao.WishDAO.selectWishListByMemberId", memberId);
+    public void insertWish(String id, int pr_key) {
+    	
+    	sqlSession.insert("insertWish", Map.of("id", id, "pr_key", pr_key));
     }
 
-    // 찜한 상품을 카트에 추가
     @Override
-    public int insertCartByWishKey(int wishKey) {
-        return sqlSession.insert("shopping.dao.WishDAO.insertCartByWishKey", wishKey);
+    public List<WishDTO> selectWishListByMemberId(String id) {
+    	
+    	return sqlSession.selectList("selectWishListByMemberId", id);
     }
 
-    // 찜한 상품 삭제
     @Override
-    public int deleteWishByWishKey(int wishKey) {
-        return sqlSession.delete("shopping.dao.WishDAO.deleteWishByWishKey", wishKey);
+    public void insertCartByWishKey(int wish_key) {
+    	
+    	sqlSession.insert("insertCartByWishKey", wish_key);
     }
+
+    @Override
+    public void deleteWishByWishKey(int wish_key) {
+    	
+    	sqlSession.delete("deleteWishByWishKey", wish_key);
+    }
+
 }
