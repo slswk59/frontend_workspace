@@ -80,13 +80,13 @@ pageEncoding="UTF-8"%>
                 <span class="all_choose">전체선택</span>
               </label>
               <span class="l"></span>
-              <button class="all_reset">선택삭제</button>
+              <button class="select_delete">선택삭제</button>
             </div>
             <div class="cart_goodslist">
               <ul class="cart_goodslist">
                 <li class="cart_goodslist">
                   <label class="all_choose2">
-                    <input type="checkbox" class="goods_checkbox" checked />
+                    <input type="checkbox" class="choose_checkbox" checked />
                     <div class="check_icon_group">
                       <!--<svg
                         width="24"
@@ -122,12 +122,14 @@ pageEncoding="UTF-8"%>
                       class="goods_minusbutton"
                       type="button"
                       aria-label="수량내리기"
+                      style="cursor: pointer"
                     ></button>
                     <div class="goods_countnumber">1</div>
                     <button
                       class="goods_plusbutton"
                       type="button"
                       aria-label="수량올리기"
+                      style="cursor: pointer"
                     ></button>
                   </div>
                   <div class="cart_goods_price">
@@ -154,7 +156,7 @@ pageEncoding="UTF-8"%>
                 </li>
                 <li class="cart_goodslist">
                   <label class="all_choose2_1">
-                    <input type="checkbox" class="goods_checkbox" checked />
+                    <input type="checkbox" class="choose_checkbox" checked />
                     <div class="check_icon_group">
                       <!--<svg
                         width="24"
@@ -190,12 +192,14 @@ pageEncoding="UTF-8"%>
                       class="goods_minusbutton"
                       type="button"
                       aria-label="수량내리기"
+                      style="cursor: pointer"
                     ></button>
                     <div class="goods_countnumber">1</div>
                     <button
                       class="goods_plusbutton"
                       type="button"
                       aria-label="수량올리기"
+                      style="cursor: pointer"
                     ></button>
                   </div>
                   <div class="cart_goods_price">
@@ -222,7 +226,7 @@ pageEncoding="UTF-8"%>
                 </li>
                 <li class="cart_goodslist">
                   <label class="all_choose2_2">
-                    <input type="checkbox" class="goods_checkbox" checked />
+                    <input type="checkbox" class="choose_checkbox" checked />
                     <div class="check_icon_group">
                       <!--<svg
                         width="24"
@@ -258,12 +262,14 @@ pageEncoding="UTF-8"%>
                       class="goods_minusbutton"
                       type="button"
                       aria-label="수량내리기"
+                      style="cursor: pointer"
                     ></button>
                     <div class="goods_countnumber">1</div>
                     <button
                       class="goods_plusbutton"
                       type="button"
                       aria-label="수량올리기"
+                      style="cursor: pointer"
                     ></button>
                   </div>
                   <div class="cart_goods_price">
@@ -304,16 +310,11 @@ pageEncoding="UTF-8"%>
                     type="button"
                     height="36"
                     radius="3"
+                    style="cursor: pointer"
+                    onclick="window.open('http://localhost:8090/delivery.jsp', 'btn-add-delivery', 'width=600, height=400')"
                   >
-                    <a
-                      href="http://localhost:8090/csa.jsp"
-                      target="_blank"
-                      class="btn_transparent"
-                      id="delivery_edit_btn"
-                    >
-                    <span class="cart_destination_change">배송지 변경</span>
+                    새 배송지 추가
                   </button>
-                </a>
                 </div>
               </div>
               <div class="cart_price_group">
