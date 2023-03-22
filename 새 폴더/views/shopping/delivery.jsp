@@ -71,6 +71,7 @@ pageEncoding="UTF-8"%>
           <th class="del_phone">연락처</th>
           <th class="del_address">주소</th>
           <th class="del_delete">삭제</th>
+          <th class="del_update">수정</th>
         </tr>
       </thead>
       <tbody>
@@ -86,6 +87,11 @@ pageEncoding="UTF-8"%>
               삭제
             </button>
           </td>
+          <td class="del_update_td">
+            <button onclick="updateDelivery(1)" style="cursor: pointer">
+              수정
+            </button>
+          </td>
         </tr>
 
         <tr>
@@ -98,6 +104,11 @@ pageEncoding="UTF-8"%>
           <td class="del_delete_td">
             <button onclick="deleteDelivery(2)" style="cursor: pointer">
               삭제
+            </button>
+          </td>
+          <td class="del_update_td">
+            <button onclick="updateDelivery(1)" style="cursor: pointer">
+              수정
             </button>
           </td>
         </tr>
