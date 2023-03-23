@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -46,13 +49,17 @@ pageEncoding="UTF-8"%>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-      function deleteDelivery(deliveryId) {
-        var row = document.querySelector(
-          'input[name="delivery"][value="' + deliveryId + '"]'
-        ).parentNode.parentNode;
-        row.parentNode.removeChild(row);
-      }
-    </script>
+  const deleteBtns = document.querySelectorAll('.delete-btn');
+
+  deleteBtns.forEach(deleteBtn => {
+    deleteBtn.addEventListener('click', () => {
+      const addressId = deleteBtn.dataset.addressId;
+      const deleteForm = document.querySelector('#delete-address-form');
+      deleteForm.querySelector('input[name="del_key"]').value = addressId;
+      deleteForm.submit();
+    });
+  });
+</script>
   </head>
 
   <body style="background-color: #f2e6d9">
@@ -75,43 +82,27 @@ pageEncoding="UTF-8"%>
         </tr>
       </thead>
       <tbody>
+      <c:forEach items="${aList}" var="dto">
         <tr>
           <td class="del_check_td" style="text-align: center">
             <input type="radio" name="delivery" value="1" />
           </td>
-          <td class="recevier_name_td">홍길동</td>
-          <td class="del_phone_td">010-8282-8282</td>
-          <td class="del_address_td">태백산 산기슭</td>
+          <input type="hidden" value="${dto.del_key}"/>
+          <td class="recevier_name_td">${dto.receiver_name}</td>
+          <td class="del_phone_td">${dto.del_phone }</td>
+          <td class="del_address_td">${dto.del_address }</td>
           <td class="del_delete_td">
-            <button onclick="deleteDelivery(1)" style="cursor: pointer">
-              삭제
-            </button>
+            <form id="delete-address-form" method="post" action="/shopping/delivery/deleteAddress.do">
+               <input type="hidden" name="del_key" value="">
+               <button type="submit">삭제</button>
+            </form>
           </td>
           <td class="del_update_td">
-            <button onclick="updateDelivery(1)" style="cursor: pointer">
-              수정
-            </button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-delkey="${delivery.del_key}">수정</button>
           </td>
         </tr>
+        </c:forEach>
 
-        <tr>
-          <td class="del_check_td" style="text-align: center">
-            <input type="radio" name="delivery" value="2" />
-          </td>
-          <td class="recevier_name_td">홍길동</td>
-          <td class="del_phone_td">010-8282-8282</td>
-          <td class="del_address_td">태백산 산기슭</td>
-          <td class="del_delete_td">
-            <button onclick="deleteDelivery(2)" style="cursor: pointer">
-              삭제
-            </button>
-          </td>
-          <td class="del_update_td">
-            <button onclick="updateDelivery(1)" style="cursor: pointer">
-              수정
-            </button>
-          </td>
-        </tr>
       </tbody>
     </table>
     <div class="no-delivery-info" style="color: #777777">
