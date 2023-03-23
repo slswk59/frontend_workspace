@@ -7,15 +7,16 @@ import shopping.dto.AddressDTO;
 public interface AddressService {
 	
 	// 배송지 수정
-	public void updateAddress(AddressDTO addressDTO);
+	public void updateAddressProcess(AddressDTO addressDTO);
 
 	// 배송지 삭제
-	public void deleteAddress(int del_key);
+	public void deleteAddressProcess(int del_key);
 
 	// 회원의 배송지 리스트 불러오기
-	public List<AddressDTO> selectAllAddresses(String id);
+	public List<AddressDTO> selectAllAddressesProcess(String id);
 
 	// 배송지 추가
-	public void insertAddress(AddressDTO addressDTO);
+	public void insertAddressProcess(AddressDTO addressDTO);
+
 
 }

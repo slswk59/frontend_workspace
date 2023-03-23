@@ -19,22 +19,22 @@ public class AddressServiceImp implements AddressService {
 	}
 	
 	@Override
-	public void updateAddress(AddressDTO addressDTO) {
+	public void updateAddressProcess(AddressDTO addressDTO) {
 		addressDao.updateAddress(addressDTO);
 	}
 
 	@Override
-	public void deleteAddress(int del_key) {
+	public void deleteAddressProcess(int del_key) {
 		addressDao.deleteAddress(del_key);
 	}
 
 	@Override
-	public List<AddressDTO> selectAllAddresses(String id) {
+	public List<AddressDTO> selectAllAddressesProcess(String id) {
 		return addressDao.selectAllAddresses(id);
 	}
 
 	@Override
-	public void insertAddress(AddressDTO addressDTO) {
+	public void insertAddressProcess(AddressDTO addressDTO) {
 		addressDao.insertAddress(addressDTO);
 	}
 
