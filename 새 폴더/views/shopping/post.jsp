@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,11 +18,11 @@ pageEncoding="UTF-8"%>
 
             // 각 주소의 노출 규칙에 따라 주소를 조합한다.
             // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-            var addr = ""; // 주소 변수
-            var extraAddr = ""; // 참고항목 변수
+            var addr = ''; // 주소 변수
+            var extraAddr = ''; // 참고항목 변수
 
             //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-            if (data.userSelectedType === "R") {
+            if (data.userSelectedType === 'R') {
               // 사용자가 도로명 주소를 선택했을 경우
               addr = data.roadAddress;
             } else {
@@ -28,34 +31,34 @@ pageEncoding="UTF-8"%>
             }
 
             // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-            if (data.userSelectedType === "R") {
+            if (data.userSelectedType === 'R') {
               // 법정동명이 있을 경우 추가한다. (법정리는 제외)
               // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-              if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+              if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
                 extraAddr += data.bname;
               }
               // 건물명이 있고, 공동주택일 경우 추가한다.
-              if (data.buildingName !== "" && data.apartment === "Y") {
+              if (data.buildingName !== '' && data.apartment === 'Y') {
                 extraAddr +=
-                  extraAddr !== ""
-                    ? ", " + data.buildingName
+                  extraAddr !== ''
+                    ? ', ' + data.buildingName
                     : data.buildingName;
               }
               // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-              if (extraAddr !== "") {
-                extraAddr = " (" + extraAddr + ")";
+              if (extraAddr !== '') {
+                extraAddr = ' (' + extraAddr + ')';
               }
               // 조합된 참고항목을 해당 필드에 넣는다.
-              document.getElementById("sample6_extraAddress").value = extraAddr;
+              document.getElementById('sample6_extraAddress').value = extraAddr;
             } else {
-              document.getElementById("sample6_extraAddress").value = "";
+              document.getElementById('sample6_extraAddress').value = '';
             }
 
             // 우편번호와 주소 정보를 해당 필드에 넣는다.
-            document.getElementById("sample6_postcode").value = data.zonecode;
-            document.getElementById("sample6_address").value = addr;
+            document.getElementById('sample6_postcode').value = data.zonecode;
+            document.getElementById('sample6_address').value = addr;
             // 커서를 상세주소 필드로 이동한다.
-            document.getElementById("sample6_detailAddress").focus();
+            document.getElementById('sample6_detailAddress').focus();
           },
         }).open();
       }
@@ -83,7 +86,7 @@ pageEncoding="UTF-8"%>
     <link rel="stylesheet" href="./CSS/cart.css" />
     <link rel="stylesheet" href="./CSS/wish.css" />
     <link rel="stylesheet" href="./CSS/order.css" />
-    <link rel="stylesheet" href="./CSS/post.css" />
+    <link rel="stylesheet" href="<c:url value="/resources/CSS/post.css"/>" >
   </head>
 
   <body>
@@ -91,18 +94,18 @@ pageEncoding="UTF-8"%>
     <form name="regform">
       <p>
         <label
-          >우편번호 :
+          >주소 :
           <input
             type="text"
             size="5"
             maxlength="5"
             name="address1"
             id="sample6_postcode"
-            placeholder="우편번호"
+            placeholder="주소"
           />
           <input
             type="button"
-            value="우편번호 검색"
+            value="주소 검색"
             onclick="sample6_execDaumPostcode()"
           />
         </label>
@@ -129,12 +132,12 @@ pageEncoding="UTF-8"%>
       </p>
       <p>
         <label
-          >전달사항 :
+          >배송지명 :
           <input
             type="text"
             name="address3"
             id="sample6_extraAddress"
-            placeholder="배송 시 전달사항"
+            placeholder="받는 분의 성함을 적어주세요."
         /></label>
       </p>
       <p><input type="button" value="주소변경" onclick="sendit()" /></p>
