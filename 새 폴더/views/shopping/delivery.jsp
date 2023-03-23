@@ -32,7 +32,7 @@ pageEncoding="UTF-8"%>
     <link rel="stylesheet" href="./CSS/cart.css" />
     <link rel="stylesheet" href="./CSS/wish.css" />
     <link rel="stylesheet" href="./CSS/order.css" />
-    <link rel="stylesheet" href="./CSS/delivery.css" />
+    <link rel="stylesheet" href="<c:url value="/resources/CSS/delivery.css"/>" >
 
     <!-- Script -->
     <script
@@ -49,16 +49,23 @@ pageEncoding="UTF-8"%>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-  const deleteBtns = document.querySelectorAll('.delete-btn');
+    $(document).ready(function() {
+    	  $(".delete_address_btn").on("click",function(e) {
+    		  e.preventDefault();
+    		  //let del_key = $(".del_key").val();
+    		  const del_key = parseInt($(this).data("del_key"));
+    		  //const del_key = document.getElementsByClassName(".delete_address_btn").val();
+    		  $(".del_key").val(del_key);
+    		  parseInt($(this).parent("div").find(".del_key").val(del_key));
+				console.log(goods_price);
 
-  deleteBtns.forEach(deleteBtn => {
-    deleteBtn.addEventListener('click', () => {
-      const addressId = deleteBtn.dataset.addressId;
-      const deleteForm = document.querySelector('#delete-address-form');
-      deleteForm.querySelector('input[name="del_key"]').value = addressId;
-      deleteForm.submit();
-    });
-  });
+    			console.log(del_key);
+    			//console.log("del_key:" +del_key);
+    	   
+    	    //$(this).closest("form").find("input[name=del_key]").val(delKey);
+    	    $(".del_form").submit();
+    	  });
+    	});
 </script>
   </head>
 
@@ -83,25 +90,25 @@ pageEncoding="UTF-8"%>
       </thead>
       <tbody>
       <c:forEach items="${aList}" var="dto">
-        <tr>
-          <td class="del_check_td" style="text-align: center">
-            <input type="radio" name="delivery" value="1" />
+         <tr>
+           <td class="del_check_td" style="text-align: center">
+             <input type="radio" name="delivery" value="1" />
           </td>
-          <input type="hidden" value="${dto.del_key}"/>
-          <td class="recevier_name_td">${dto.receiver_name}</td>
-          <td class="del_phone_td">${dto.del_phone }</td>
-          <td class="del_address_td">${dto.del_address }</td>
-          <td class="del_delete_td">
-            <form id="delete-address-form" method="post" action="/shopping/delivery/deleteAddress.do">
-               <input type="hidden" name="del_key" value="">
-               <button type="submit">삭제</button>
-            </form>
-          </td>
-          <td class="del_update_td">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-delkey="${delivery.del_key}">수정</button>
-          </td>
-        </tr>
-        </c:forEach>
+         <input type="hidden"  value="${dto.del_key}"/>
+           <td class="recevier_name_td">${dto.receiver_name}</td>
+           <td class="del_phone_td">${dto.del_phone }</td>
+           <td class="del_address_td">${dto.del_address }</td>
+           <td class="del_delete_td">
+             <form method="post" action="${pageContext.request.contextPath}/shopping/delivery.do" class ="del_form">
+               <input type="hidden" name="del_key" class="del_key" value="${dto.del_key}">
+             <button type="button" class="btn btn-danger delete_address_btn" data-del_key="${dto.del_key}" data-testid="delete" value="${dto.del_key}">삭제</button>
+             </form>
+           </td>
+           <td class="del_update_td">
+             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-delkey="${delivery.del_key}">수정</button>
+           </td>
+         </tr>
+      </c:forEach>
 
       </tbody>
     </table>
@@ -110,7 +117,7 @@ pageEncoding="UTF-8"%>
       <button
         class="btn-add-delivery"
         style="cursor: pointer"
-        onclick="window.open('http://localhost:8090/post.jsp', 'btn-add-delivery', 'width=600, height=400')"
+        onclick="window.open('http://localhost:8090/myapp/shopping/post.do', 'btn-add-delivery', 'width=600, height=400')"
         style="background-color: #cccccc; color: #444444"
       >
         + 새 배송지 추가
