@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+	<!-- Product 관련 -->
+	<!-- ProductDaoImp 빈 선언 -->
+	<bean id="productDao" class="shopping.dao.ProductDaoImp">
+		<property name="sqlSession" ref="sqlSession" />
+	</bean>
+
+	<!-- ProductServiceImp 빈 선언 -->
+	<bean id="productService"
+		class="shopping.service.ProductServiceImp">
+		<property name="productDao" ref="productDao" />
+	</bean>
+
+	<!-- ProductController 빈 선언 -->
+	<bean class="shopping.controller.ProductController">
+		<property name="productService" ref="productService" />
+	</bean>
+
+
+	<!-- Orders 관련 -->
+	<!-- OrdersDaoImp 빈 선언 -->
+	<bean id="ordersDao" class="shopping.dao.OrdersDaoImp">
+		<property name="sqlSession" ref="sqlSession" />
+	</bean>
+
+	<!-- OrdersServiceImp 빈 선언 -->
+	<bean id="ordersService" class="shopping.service.OrdersServiceImp">
+		<property name="ordersDao" ref="ordersDao" />
+	</bean>
+
+	<!-- ShoppingController 빈 선언 -->
+	<bean class="shopping.controller.OrdersController">
+		<property name="ordersService" ref="ordersService" />
+	</bean>
+
+
+	<!-- Cart 관련 -->
+	<!-- CartDaoImp 빈 선언 -->
+	<bean id="cartDto" class="shopping.dao.CartDaoImp">
+		<property name="sqlSession" ref="sqlSession" />
+	</bean>
+
+	<!-- CartServiceImp 빈 선언 -->
+	<bean id="cartService" class="shopping.service.CartServiceImp">
+		<property name="cartDto" ref="cartDto" />
+	</bean>
+
+	<!-- CartController 빈 선언 -->
+	<bean class="shopping.controller.CartController">
+		<property name="cartService" ref="cartService" />
+	</bean>
+
+	<!-- address관련 -->
+	<!-- AddressDaoImp 빈 선언 -->
+	<bean id="addressDao" class="shopping.dao.AddressDaoImp">
+		<property name="sqlSession" ref="sqlSession" />
+	</bean>
+
+	<!-- AddressServiceImp 빈 선언 -->
+	<bean id="addressService"
+		class="shopping.service.AddressServiceImp">
+		<property name="addressDao" ref="addressDao" />
+	</bean>
+
+	<!-- AddressController 빈 선언 -->
+	<bean class="shopping.controller.AddressController">
+		<property name="addressService" ref="addressService" />
+	</bean>
+
+	<!-- Wish 관련 -->
+	<!-- WishDaoImp 빈 선언 -->
+	<bean id="wishDao" class="shopping.dao.WishDaoImp">
+		<property name="sqlSession" ref="sqlSession" />
+	</bean>
+
+	<!-- WishServiceImp 빈 선언 -->
+	<bean id="wishService" class="shopping.service.WishServiceImp">
+		<property name="wishDao" ref="wishDao" />
+	</bean>
+
+	<!-- WishController 빈 선언 -->
+	<bean class="shopping.controller.WishController">
+		<property name="wishService" ref="wishService" />
+	</bean>
+
+
+
+
+</beans>

@@ -1,0 +1,111 @@
+#advertise_cate {
+  margin: 80px 0 40px;
+}
+
+#advertise_cate div {
+  width: 100%;
+  max-width: 1050px;
+  height: 200px;
+  margin: 0 auto;
+  background-position: center;
+  background-size: cover;
+}
+
+#advertise_cate div.img1 {
+  background-image: url('../img/img1.jpg');
+}
+#advertise_cate div.img2 {
+  background-image: url('../img/img2.jpg');
+}
+#advertise_cate div.img3 {
+  background-image: url('../img/img3.jpg');
+}
+
+section.recommend-items_cate {
+  position: relative;
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  color: #000000;
+  padding: 32px 0 40px 0;
+}
+
+section.recommend-items_cate h2 {
+  margin: 20px auto 50px;
+  text-align: center;
+  font-size: 28px;
+}
+
+
+   
+section.recommend-items_cate .recommend-slide-items {
+  display: grid;
+   grid-template-columns: repeat(auto-fill, 249px);
+   gap: 31px 18px;
+   width: 100%;
+}
+
+section.recommend-items_cate .recommend-slide-item {
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    color: rgb(51, 51, 51);
+    cursor: pointer;
+}
+
+div.item-img-container {
+  position: relative;
+  width: 250px;
+  height: 320px;
+  overflow: hidden;
+}
+img.item-img {
+  position: absolute;
+  width: 250px;
+  height: 320px;
+}
+
+button.cart_button {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  cursor: pointer;
+}
+
+
+
+div.paging_group {
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  margin-top: 36px;
+}
+
+a.paging_atag {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-top: 1px solid rgb(221, 221, 221);
+  border-left: 1px solid rgb(221, 221, 221);
+  border-right: 1px solid rgb(221, 221, 221);
+  border-bottom: 1px solid rgb(221, 221, 221);
+  border-image: initial;
+  cursor: pointer;
+}
+
+.category-name {
+   margin-top: 50px;
+    font-weight: 600;
+    font-size: 32px;
+    color: rgb(51, 51, 51);
+    line-height: 35px;
+    letter-spacing: -1px;
+    text-align: center;	
+    padding-left: 450px;
+}
