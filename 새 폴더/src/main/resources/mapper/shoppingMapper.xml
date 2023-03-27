@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shopping">
+	<!-- 상품관련 -->
+	<select id="productCount" resultType="int">
+		SELECT count(*) FROM
+		product
+	</select>
+
+	<select id="selectOneProduct" parameterType="int"
+		resultType="shopping.dto.ProductDTO">
+		SELECT * FROM product WHERE pr_key=#{pr_key}
+	</select>
+
+	<select id="productNewList" parameterType="shopping.dto.PageDTO"
+		resultType="shopping.dto.ProductDTO">
+		<![CDATA[ 
+		SELECT b.*
+			FROM(SELECT rownum AS rm, a.*
+                FROM(SELECT * FROM product 
+                ORDER BY pr_reg_date desc)a
+                )b
+		WHERE b.rm>=#{startRow} AND b.rm<=#{endRow}
+		]]>
+	</select>
+
+	<select id="productSaleList"
+		parameterType="shopping.dto.PageDTO"
+		resultType="shopping.dto.ProductDTO">
+		<![CDATA[ 
+		SELECT b.*
+			FROM(SELECT rownum AS rm, a.*
+                FROM(SELECT * FROM product 
+                ORDER BY pr_dcper desc)a
+                )b
+		WHERE b.rm>=#{startRow} AND b.rm<=#{endRow}
+		]]>
+	</select>
+
+	<select id="productthemeList_drama"
+		parameterType="shopping.dto.PageDTO"
+		resultType="shopping.dto.ProductDTO">
+		<![CDATA[ 
+		SELECT b.*
+			FROM(SELECT rownum AS rm, a.*
+                FROM(SELECT * FROM product 
+                WHERE pr_theme='드라마정주행')a
+                )b
+		WHERE b.rm>=#{startRow} AND b.rm<=#{endRow}
+		]]>
+	</select>
+
+	<select id="productthemeList_organic"
+		parameterType="shopping.dto.PageDTO"
+		resultType="shopping.dto.ProductDTO">
+		<![CDATA[ 
+		SELECT b.*
+			FROM(SELECT rownum AS rm, a.*
+                FROM(SELECT * FROM product 
+                WHERE pr_theme='올가닉제품')a
+                )b
+		WHERE b.rm>=#{startRow} AND b.rm<=#{endRow}
+		]]>
+	</select>
+
+	<!-- 카테고리페이지 -->
+
+	<select id="ctgProductCount" parameterType="String"
+		resultType="int">
+		<![CDATA[
+			select count(*) as count
+			from ( select *
+				from product 
+				where cate_key=#{category}
+			)
+		]]>
+	</select>
+
+	<select id="ctgProductList" parameterType="shopping.dto.PageDTO"
+		resultType="shopping.dto.ProductDTO">
+		<![CDATA[ 
+		SELECT b.*
+			FROM(SELECT rownum AS rm, a.*
+                FROM(SELECT * FROM product 
+                WHERE cate_key=#{category})a
+                )b
+		WHERE b.rm>=#{startRow} AND b.rm<=#{endRow}
+		]]>
+	</select>
+
+	<select id="searchList" parameterType="shopping.dto.PageDTO"
+		resultType="shopping.dto.ProductDTO">
+		<![CDATA[ 
+		SELECT b.*
+			FROM(SELECT rownum AS rm, a.*
+                FROM(SELECT * FROM product WHERE REPLACE(pr_name,' ','') LIKE '%' ||  REPLACE(#{searchWord},' ','') || '%') a
+                )b		
+		]]>
+	</select>
+
+
+	<!-- best 데이터베이스 -->
+	<select id="BestImages" resultType="shopping.dto.ProductDTO">
+		<![CDATA[
+	SELECT t.PR_THUMBNAIL, p.PR_NAME, p.PR_PRICE, p.PR_DCPRICE, p.PR_DCper, p.pr_key
+	FROM product t
+	JOIN (
+	    SELECT PR_KEY, PR_NAME, PR_PRICE, PR_DCPRICE, PR_DCper
+	    FROM product
+	) p ON t.PR_KEY = p.PR_KEY
+	JOIN (
+	    SELECT PR_KEY, SUM(OR_pr_count) AS SUM_NUM
+	    FROM or_detail
+	    GROUP BY PR_KEY
+	    ORDER BY SUM_NUM DESC
+	) o ON p.PR_KEY = o.PR_KEY
+	WHERE ROWNUM <= 16
+		]]>
+		</select>
+
+
+	<!-- chuchun -->
+	<select id="chuchunButton" resultType="shopping.dto.ProductDTO">
+	<![CDATA[
+	SELECT 
+	  PR_KEY, 
+	  PR_NAME, 
+	  PR_THUMBNAIL, 
+	  PR_PRICE, 
+	  PR_DCPRICE, 
+	  PR_DCPER
+	FROM 
+	(
+	  SELECT 
+	    PR_KEY, 
+	    PR_NAME, 
+	    PR_THUMBNAIL, 
+	    PR_PRICE, 
+	    PR_DCPRICE, 
+	    PR_DCPER, 
+	    ROW_NUMBER() OVER (ORDER BY dbms_random.value) rn
+	  FROM product
+	)
+	WHERE rn <= 12
+		]]>
+	</select>
+
+
+	<insert id="insertCart" parameterType="shopping.dto.CartDTO">
+		INSERT INTO cart(cart_key,
+		cart_count, cart_price, cart_reg_date, pr_key,
+		id)
+		VALUES(cart_key_seq.nextval, #{cart_count}, #{cart_price},
+		to_char(sysdate, 'YYYY-MM-DD
+		HH24:mi:SS'), #{pr_key}, #{id,
+		jdbcType=VARCHAR})
+	</insert>
+
+	<select id="countCart" resultType="int">
+		SELECT count(*) FROM cart
+		WHERE id=#{id, jdbcType=VARCHAR} and pr_key=#{pr_key}
+	</select>
+
+
+	<update id="modifyCart" parameterType="shopping.dto.CartDTO">
+		UPDATE cart
+		SET
+		cart_count=#{cart_count}, cart_price=#{cart_price},
+		cart_reg_date=to_char(sysdate, 'YYYY-MM-DD HH24:mi:SS')
+		WHERE
+		id=#{id,jdbcType=VARCHAR} and pr_key=#{pr_key}
+	</update>
+
+	<update id="updateCart" parameterType="shopping.dto.CartDTO">
+		UPDATE cart
+		SET
+		cart_count=cart_count+#{cart_count},
+		cart_price=cart_price+#{cart_price}, cart_reg_date=to_char(sysdate,
+		'YYYY-MM-DD HH24:mi:SS')
+		WHERE id=#{id,jdbcType=VARCHAR} and
+		pr_key=#{pr_key}
+	</update>
+
+
+	<resultMap type="shopping.dto.CartDTO" id="cartlistSelect"
+		autoMapping="true">
+		<association property="memberDTO"
+			javaType="member.dto.MemberDTO">
+			<result column="id" property="id" />
+		</association>
+
+		<association property="productDTO"
+			javaType="shopping.dto.ProductDTO">
+			<result column="pr_key" property="pr_key" />
+			<result column="pr_name" property="pr_name" />
+			<result column="pr_thumbnail" property="pr_thumbnail" />
+			<result column="pr_dcprice" property="pr_dcprice" />
+		</association>
+	</resultMap>
+
+	<select id="cartlist" parameterType="String"
+		resultMap="cartlistSelect">
+		SELECT p.pr_key, p.pr_name, p.pr_thumbnail, m.id,
+		t.cart_price, t.cart_count, t.cart_key, p.pr_dcprice
+		FROM member m,
+		product p, cart t
+		WHERE m.id = t.id and p.pr_key = t.pr_key
+		and m.id =
+		#{id}
+	</select>
+
+	<delete id="deleteCart" parameterType="int">
+		DELETE FROM cart
+		WHERE
+		cart_key=#{cart_key}
+	</delete>
+
+	<!-- 구매내역관련 -->
+	<resultMap type="shopping.dto.OrdersDTO" id="listSelect"
+		autoMapping="true">
+		<association property="memberDTO"
+			javaType="member.dto.MemberDTO">
+			<result column="id" property="id" />
+		</association>
+		<association property="productDTO"
+			javaType="shopping.dto.ProductDTO">
+			<result column="pr_name" property="pr_name" />
+			<result column="pr_thumbnail" property="pr_thumbnail" />
+		</association>
+	</resultMap>
+
+	<select id="orderlist" parameterType="String"
+		resultMap="listSelect">
+		SELECT *
+		FROM(SELECT o.id, o.or_key, o.or_price, o.or_date,
+		t.pr_key, p.pr_name,
+		p.pr_thumbnail,
+		ROW_NUMBER() OVER(PARTITION BY
+		o.or_key ORDER BY t.pr_key DESC) AS RankNO
+		FROM orders o, or_detail t,
+		product p
+		WHERE o.or_key = t.or_key AND p.pr_key = t.pr_key AND
+		o.id=#{id}
+		) WHERE RankNO = 1
+	</select>
+
+
+
+	<resultMap type="shopping.dto.OrdersDTO"
+		id="detailListSelect" autoMapping="true">
+		<association property="productDTO"
+			javaType="shopping.dto.ProductDTO">
+			<result column="pr_name" property="pr_name" />
+			<result column="pr_thumbnail" property="pr_thumbnail" />
+			<result column="pr_price" property="pr_price" />
+			<result column="pr_dcprice" property="pr_dcprice" />
+		</association>
+		<association property="or_detailDTO"
+			javaType="shopping.dto.Or_detailDTO">
+			<result column="or_detail_key" property="or_detail_key" />
+			<result column="or_pr_count" property="or_pr_count" />
+		</association>
+	</resultMap>
+
+	<select id="orderDetailList" parameterType="int"
+		resultMap="detailListSelect">
+		SELECT o.or_key, t.or_detail_key, t.or_pr_count,
+		p.pr_name,
+		p.pr_thumbnail, p.pr_price, p.pr_dcprice
+		FROM orders o, or_detail t,
+		product p
+		WHERE o.or_key = t.or_key AND p.pr_key = t.pr_key AND
+		o.or_key=#{or_key}
+		ORDER BY or_detail_key ASC, or_date ASC
+	</select>
+
+	<!-- 배송지 관련 -->
+	<!-- 배송지 수정 -->
+	<update id="updateAddress"
+		parameterType="shopping.dto.AddressDTO">
+		UPDATE delivery_address
+		SET
+		receiver_name=#{receiver_name}, del_phone=#{del_phone},
+		del_address=#{del_address}
+		WHERE del_key=#{del_key}
+	</update>
+
+	<!-- 배송지 삭제 -->
+	<delete id="deleteAddress" parameterType="int">
+		DELETE FROM
+		delivery_address
+		WHERE del_key=#{del_key}
+	</delete>
+
+	<!-- 회원의 배송지 리스트 불러오기 -->
+	<select id="selectAllAddresses" parameterType="String"
+		resultType="shopping.dto.AddressDTO">
+		SELECT del_key, id, receiver_name, del_phone, del_address
+		FROM delivery_address
+		WHERE id=#{id}
+	</select>
+
+	<!-- 배송지 추가 -->
+	<insert id="insertAddress"
+		parameterType="shopping.dto.AddressDTO">
+
+		INSERT INTO delivery_address(
+			DEL_KEY, 
+			RECEIVER_NAME, 
+			DEL_POSTCODE, 
+			DEL_PHONE, 
+			DEL_ADDRESS, 
+			DEL_DETAILADDRESS, 
+			DEL_REG_DATE, 
+			ID) 
+		VALUES(
+			(select max(del_key)+1 from delivery_address), 
+			#{receiver_name},
+			#{del_postcode},
+			#{del_phone}, 
+			#{del_address},
+			#{del_detailaddress}, 
+			to_char(sysdate,'YYYY-MM-DD HH24:mi:SS'),
+			#{id} 
+		)
+	</insert>
+
+	<resultMap type="shopping.dto.WishDTO" id="wishListSelect"
+		autoMapping="true">
+		<association property="productDTO"
+			javaType="shopping.dto.ProductDTO">
+			<result column="pr_name" property="pr_name" />
+			<result column="pr_thumbnail" property="pr_thumbnail" />
+			<result column="pr_price" property="pr_price" />
+			<result column="pr_dcprice" property="pr_dcprice" />
+			<result column="pr_dcper" property="pr_dcper" />
+		</association>
+	</resultMap>
+
+	<!-- 찜 관련 -->
+	<!-- 회원의 찜목록(wish_key) 불러오기 -->
+	<select id="selectWishList" parameterType="String"
+		resultMap="wishListSelect">
+		SELECT w.wish_key, w.pr_key, p.pr_name, p.pr_price, p.pr_thumbnail,
+		p.pr_dcprice, p.pr_dcper
+		FROM wish w JOIN product p ON w.pr_key = p.pr_key
+		WHERE w.id = #{id}
+	</select>
+
+	<!-- (wish_key)찜목록에서 pr_key 삭제 -->
+	<delete id="deleteWishByWishKey" parameterType="int">
+		DELETE FROM wish
+		WHERE wish_key=#{wish_key}
+	</delete>
+
+	<!-- (상품)pr_key를 (찜목록)wish_key에 추가 -->
+	<insert id="insertWish" parameterType="shopping.dto.WishDTO">
+		INSERT INTO wish (wish_key, wish_reg_date, pr_key, id)
+		VALUES (wish_key_seq.nextval,to_char(sysdate,'YYYY-MM-DD HH24:mi:SS'),
+		#{pr_key}, #{id})
+	</insert>
+
+	<!-- (wish_key)찜목록에있는 (상품)pr_key를 장바구니(cart)에 추가 -->
+	<insert id="insertCartByWishKey"
+		parameterType="shopping.dto.CartDTO">
+		INSERT INTO cart(cart_key, cart_count, cart_price, cart_reg_date, pr_key,
+		id)
+		VALUES(cart_key_seq.nextval, #{cart_count}, #{cart_price}, to_char(sysdate, 'YYYY-MM-DD
+		HH24:mi:SS'), #{pr_key}, #{id, jdbcType=VARCHAR})
+	</insert>
+</mapper>
