@@ -1,30 +1,28 @@
-import React from "react";
-import { useState } from "react";
-
-// reactstrap components
+import React, { useState } from "react";
 import {
-  Button,
   Card,
+  Button,
   Form,
+  FormGroup,
+  Label,
   Input,
+  FormFeedback,
   Container,
   Row,
   Col,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  FormGroup,
-  Label,
 } from "reactstrap";
 
 function Register() {
-  document.documentElement.classList.remove("nav-open");
-  React.useEffect(() => {
-    document.body.classList.add("register-page");
-    return function cleanup() {
-      document.body.classList.remove("register-page");
-    };
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState(""); // 'male', 'female' 중 하나의 값
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // 회원가입 정보를 서버로 전송하는 로직
+  };
   return (
     <>
       {/* <IndexNavbar /> */}
@@ -41,53 +39,81 @@ function Register() {
               <Card className="card-register ml-auto mr-auto">
                 <h3 className="title mx-auto">회원가입</h3>
                 <div className="social-line text-center"></div>
-                <Form className="register-form">
-                  <label>이름</label>
-                  <InputGroup className="form-group-no-border">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="nc-icon nc-email-85" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Name" type="name" />
-                  </InputGroup>
-                  <label>성별</label>
-                  <InputGroup className="form-group-no-border">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="nc-icon nc-email-85" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Gender" type="gender" />
-                  </InputGroup>
-                  <label>닉네임</label>
-                  <InputGroup className="form-group-no-border">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="nc-icon nc-email-85" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Nickname" type="nickname" />
-                  </InputGroup>
-                  <label>이메일</label>
-                  <InputGroup className="form-group-no-border">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="nc-icon nc-email-85" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Email" type="email" />
-                  </InputGroup>
-                  <label>비밀번호</label>
-                  <InputGroup className="form-group-no-border">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="nc-icon nc-key-25" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Password" type="password" />
-                  </InputGroup>
-                  <Button block className="btn-round" color="danger">
+                <Form onSubmit={handleSubmit}>
+                  <FormGroup>
+                    <Label for="email">이메일</Label>
+
+                    <Input
+                      type="email"
+                      name="email"
+                      id="email"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="password">비밀번호</Label>
+                    <Input
+                      type="password"
+                      name="password"
+                      id="password"
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="password2">비밀번호 확인</Label>
+                    <Input
+                      type="password"
+                      name="password2"
+                      id="password2"
+                      value={password2}
+                      onChange={(event) => setPassword2(event.target.value)}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="name">이름</Label>
+                    <Input
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
+                    />
+                  </FormGroup>
+                  <FormGroup tag="fieldset">
+                    <legend>성별</legend>
+                    <FormGroup check>
+                      <Label check>
+                        <Input
+                          type="radio"
+                          name="gender"
+                          value="male"
+                          checked={gender === "male"}
+                          onChange={(event) => setGender(event.target.value)}
+                        />{" "}
+                        남성
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check>
+                      <Label check>
+                        <Input
+                          type="radio"
+                          name="gender"
+                          value="female"
+                          checked={gender === "female"}
+                          onChange={(event) => setGender(event.target.value)}
+                        />{" "}
+                        여성
+                      </Label>
+                    </FormGroup>
+                  </FormGroup>
+                  <Button
+                    type="submit"
+                    block
+                    className="btn-round"
+                    color="danger"
+                  >
                     회원가입
                   </Button>
                 </Form>
