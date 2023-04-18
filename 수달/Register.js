@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../../apiurl";
+import axios from "axios";
 import {
   Card,
   Button,
@@ -12,20 +15,44 @@ import {
   Col,
 } from "reactstrap";
 
-function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [name, setName] = useState("");
-  const [gender, setGender] = useState(""); // 'male', 'female' 중 하나의 값
+const Register = () => {
+  const navigator = useNavigate();
+  const [members, setMembers] = useState({
+    email: "",
+    password: "",
+    password2: "",
+    name: "",
+    gender: "",
+  });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // 회원가입 정보를 서버로 전송하는 로직
+  const config = { headers: { "Content-Type": "application/json" } };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(`${baseUrl}/member/signup`, members, config)
+      .then((response) => {
+        console.log(response.data);
+        setMembers({
+          email: "",
+          password: "",
+          password2: "",
+          name: "",
+          gender: "",
+        });
+        navigator("/");
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
   };
+
+  const handleChange = (e) => {
+    setMembers({ ...members, [e.target.name]: e.target.value });
+  };
+
   return (
     <>
-      {/* <IndexNavbar /> */}
       <div
         className="page-header"
         style={{
@@ -42,13 +69,12 @@ function Register() {
                 <Form onSubmit={handleSubmit}>
                   <FormGroup>
                     <Label for="email">이메일</Label>
-
                     <Input
                       type="email"
                       name="email"
                       id="email"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
+                      value={members.email}
+                      onChange={handleChange}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -57,8 +83,8 @@ function Register() {
                       type="password"
                       name="password"
                       id="password"
-                      value={password}
-                      onChange={(event) => setPassword(event.target.value)}
+                      value={members.password}
+                      onChange={handleChange}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -67,8 +93,8 @@ function Register() {
                       type="password"
                       name="password2"
                       id="password2"
-                      value={password2}
-                      onChange={(event) => setPassword2(event.target.value)}
+                      value={members.password2}
+                      onChange={handleChange}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -77,8 +103,8 @@ function Register() {
                       type="text"
                       name="name"
                       id="name"
-                      value={name}
-                      onChange={(event) => setName(event.target.value)}
+                      value={members.name}
+                      onChange={handleChange}
                     />
                   </FormGroup>
                   <FormGroup tag="fieldset">
@@ -89,8 +115,8 @@ function Register() {
                           type="radio"
                           name="gender"
                           value="male"
-                          checked={gender === "male"}
-                          onChange={(event) => setGender(event.target.value)}
+                          checked={members.gender === "male"}
+                          onChange={handleChange}
                         />{" "}
                         남성
                       </Label>
@@ -101,8 +127,8 @@ function Register() {
                           type="radio"
                           name="gender"
                           value="female"
-                          checked={gender === "female"}
-                          onChange={(event) => setGender(event.target.value)}
+                          checked={members.gender === "female"}
+                          onChange={handleChange}
                         />{" "}
                         여성
                       </Label>
@@ -130,6 +156,6 @@ function Register() {
       </div>
     </>
   );
-}
+};
 
 export default Register;
