@@ -18,10 +18,10 @@ import {
 const Register = () => {
   const navigator = useNavigate();
   const [members, setMembers] = useState({
-    membeEmail: "",
-    memberPass: "",
+    email: "",
+    password: "",
     profileImage: "",
-    memberName: "",
+    username: "",
     gender: "",
   });
 
@@ -30,9 +30,9 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("memberEmail", members.memberEmail);
-    formData.append("memberPass", members.memberPass);
-    formData.append("memberName", members.memberName);
+    formData.append("email", members.email);
+    formData.append("password", members.password);
+    formData.append("username", members.username);
     formData.append("gender", members.gender);
     formData.append("profileImage", members.profileImage);
     axios
@@ -40,10 +40,10 @@ const Register = () => {
       .then((response) => {
         console.log(response.data);
         setMembers({
-          memberEmail: "",
-          memberPass: "",
+          email: "",
+          password: "",
           profileImage: "",
-          memberName: "",
+          username: "",
           gender: "",
         });
         navigator("/");
@@ -108,7 +108,7 @@ const Register = () => {
                     <Label for="email">이메일</Label>
                     <Input
                       type="email"
-                      name="memberEmail"
+                      name="email"
                       id="email"
                       value={members.email}
                       onChange={handleChange}
@@ -118,7 +118,7 @@ const Register = () => {
                     <Label for="password">비밀번호</Label>
                     <Input
                       type="password"
-                      name="memberPass"
+                      name="password"
                       id="password"
                       value={members.password}
                       onChange={handleChange}
@@ -137,7 +137,7 @@ const Register = () => {
                     <Label for="name">이름</Label>
                     <Input
                       type="text"
-                      name="memberName"
+                      name="username"
                       id="name"
                       value={members.name}
                       onChange={handleChange}
