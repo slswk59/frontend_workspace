@@ -121,6 +121,17 @@ public class MemberDTO {
 		this.autoRole = autoRole;
 	}
 	
+	//매치가 되면 true, 매치가 되지 않으면 false
+		public boolean matchPassword(String memberPass) {
+			return this.passWord.equals(memberPass);
+		}
+		
+		public void changePassword(String oldPassword, String newPassword) {
+			if(!passWord.equals(oldPassword))
+				throw new com.example.shop.common.exception.WrongEmailPasswordException();
+			this.passWord=newPassword;
+		}
+	
 	
 	
 }
