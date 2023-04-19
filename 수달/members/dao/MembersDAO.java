@@ -1,5 +1,6 @@
 package com.example.shop.members.dao;
 
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +15,6 @@ public interface MembersDAO {
 	
 	public void updateMember(MembersDTO dto);
 	public void updateByPass(MembersDTO dto);
+	public void updateProfileImage(MembersDTO member);
 	
 }

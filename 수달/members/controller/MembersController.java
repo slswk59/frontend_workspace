@@ -35,8 +35,11 @@ public class MembersController {
 
 	//회원가입 처리
 	//@RequestBody첨부파일이 없는 경우 붙이고 있는 경우에는 붙이지 않는다. (json으로 내보내므로 필요)
-	@PostMapping("/member/signup")
+	@PostMapping("/register")
 	public String addMember(@RequestBody MembersDTO membersDTO, HttpSession session) {
+		System.out.println("요청");
+		System.out.println(membersDTO.getMemberPass());
+		System.out.println(membersDTO.getMemberName());
 		membersDTO.setMemberPass(encodePassword.encode(membersDTO.getMemberPass()));
 
 		AuthInfo authInfo = membersService.addMemberProcess(membersDTO);
@@ -52,7 +55,7 @@ public class MembersController {
 	//	}
 	
 	//회원정보 가져오기
-	@GetMapping("/member/editinfo/{memberEmail}")
+	@GetMapping("/member/editinfo/{}")
 	public MembersDTO getMember(@PathVariable("memberEmail") String memberEmail) {
 		return membersService.updateMemberProcess(memberEmail);
 	}

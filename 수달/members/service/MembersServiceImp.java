@@ -21,6 +21,19 @@ public class MembersServiceImp implements MembersService {
 
 	@Override
 	public AuthInfo addMemberProcess(MembersDTO dto) {
+	    // 이미지 파일 저장 로직 추가
+	    if (dto.getMemberImage() != null && !dto.getMemberImage().isEmpty()) { // 멤버 이미지가 존재하면
+            String base64Image = dto.getMemberImage();
+            byte[] decodedImage = Base64Utils.decodeFromString(base64Image); // Base64 디코딩
+            String fileName = UUID.randomUUID().toString(); // 중복되지 않는 고유한 파일 이름 생성
+            try (OutputStream outputStream = new FileOutputStream(fileName)) {
+                outputStream.write(decodedImage); // 디코딩된 이미지 파일 저장
+                dto.setMemberImage(fileName); // DTO에 저장된 이미지 파일 이름으로 변경
+            } catch (IOException e) {
+                // 파일 저장 실패 시 처리할 예외 처리 코드 작성
+            }
+        }
+        
 		membersDao.insertMember(dto);
 		return new AuthInfo(dto.getMemberEmail(), dto.getMemberName(), dto.getMemberPass());
 	}

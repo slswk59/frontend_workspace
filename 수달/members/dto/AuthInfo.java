@@ -7,7 +7,7 @@ public class AuthInfo {
 	private String memberName;
 	private String memberPass;
 	
-	public AuthInfo() {
+	public AuthInfo() {  
 		
 	}
 

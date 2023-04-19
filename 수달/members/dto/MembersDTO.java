@@ -14,7 +14,17 @@ public class MembersDTO {
 	private int memberType;	     //회원구분 일반회원1, 관리자2
 	private boolean rememberEmail; //자동 로그인
 	private String authRole;
+	private String profileImageFilePath; // 프로필 이미지 파일 경로
 	
+	
+	public String getProfileImageFilePath() {
+		return profileImageFilePath;
+	}
+
+	public void setProfileImageFilePath(String profileImageFilePath) {
+		this.profileImageFilePath = profileImageFilePath;
+	}
+
 	public MembersDTO() {
 		
 	}
