@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- !DOCTYPE mapper는 루트요소를 mapper로 하라는 의미 -->
+    
+<mapper namespace="com.example.member.dao.MemberDAO">
+
+  
+    <!-- 회원가입 -->
+	<insert id = "insertMember" parameterType = "MemberDTO">
+		<![CDATA[
+			INSERT INTO member(member_id,email, password, name, age, gender)
+			VALUES (member_id_seq.nextval, #{email}, #{password}, #{name}, #{age}, #{gender})
+		]]>
+	</insert>
+  
+  <!-- memberEmail은 중복되지 않은 고유의 값이므로, 해당 Email에 해당하는 member정보를 가져오라는 의미 -->
+  <select id="selectByEmail" parameterType="string" resultType="MemberDTO">
+  	SELECT * FROM member
+  	WHERE email = #{email}
+  </select>
+  
+  <!-- 회원 정보 수정 (비밀번호, 이름, 닉네임, 프로필 경로) -->
+  <update id="updateMember" parameterType="MemberDTO">
+  	UPDATE member
+  	SET password=#{password}, name=#{name}, nickname=#{nickname}, profile_path=#{profile_path}
+  	WHERE email=#{email}
+  </update>
+  
+  <!-- 비밀번호 변경 -->
+  <update id="updateByPass" parameterType="MemberDTO">
+  	UPDATE member
+  	SET password=#{password}
+  	WHERE email=#{email}
+  </update>
+  
+  
+
+</mapper>
