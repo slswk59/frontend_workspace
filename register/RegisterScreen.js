@@ -50,8 +50,33 @@ const RegisterScreen = () => {
       setMember({ ...member, gender: 2 });
     }
   }
+  const [emailError, setEmailError] = useState(""); // 이메일 유효성 검사 결과 상태
 
   const handleValueChange = (e) => {
+    const { name, value } = e.target;
+
+    // 이메일 필드에 대한 유효성 검사와 중복 확인
+    if (name === "email") {
+      // 이메일 형식이 올바른지 검사
+      const emailRegex = /\S+@\S+\.\S+/;
+      if (!emailRegex.test(value)) {
+        setEmailError("유효한 이메일 주소를 입력해주세요.");
+        return;
+      }
+
+      // 서버로 이메일 중복 확인 요청 보내기
+      fetch(`/api/check-email?email=${value}`, config)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.exists) {
+            setEmailError("이미 등록된 이메일입니다.");
+          } else {
+            setEmailError("");
+          }
+        })
+        .catch((error) => console.error(error));
+    }
+
     setMember({ ...member, [e.target.name]: e.target.value });
   };
 
@@ -120,6 +145,8 @@ const RegisterScreen = () => {
                     name="email"
                     onChange={handleValueChange}
                   ></input>
+                  {emailError && <div>{emailError}</div>}
+                  {!emailError && <div>사용 가능한 이메일입니다.</div>}
                 </div>
                 <div>
                   <p
