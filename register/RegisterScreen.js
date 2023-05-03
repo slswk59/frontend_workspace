@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "../../assets/css/RegisterScreen.css";
 import { FormGroup, Input, Label } from "reactstrap";
 
@@ -9,7 +9,8 @@ const imgWidth = 350;
 
 const RegisterScreen = () => {
   const [position, setPosition] = useState(0);
-
+  const [count, setCount] = useState(3);
+  const [isvalid, setIsvalid] = useState();
   // const navigator = useNavigate();
   const [member, setMember] = useState({
     email: "",
@@ -19,6 +20,11 @@ const RegisterScreen = () => {
     gender: "",
   });
 
+  const { password, email, name, age, gender } = member;
+  const validateEmail = (email) => {
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailRegex.test(email);
+  };
   const handleNextClick = () => {
     const maxPosition = 350 * 3; // Assuming 5 images are shown at a time
     if (position < maxPosition) {
@@ -30,11 +36,34 @@ const RegisterScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (!age || !email || !password || !name || !gender) {
+      console.log("필드가 비어있습니다.");
+
+      return; // 버튼 클릭 막음
+    }
 
     console.log(member);
+    await axios.post(`${baseUrl}/register`, member, config);
     await axios
-      .post(`${baseUrl}/register`, member, config)
+      .post(`${baseUrl}/login`, member, config)
+      .then((response) => {
+        console.log("response: ", response.data);
+        //let jwtToken = response.headers['Authorization'];
+        let jwtToken = response.headers.get("Authorization");
+        console.log(jwtToken);
+
+        let jwtMemberName = response.data.name;
+        let jwtMemberEmail = response.data.email;
+        let jwtAuthRole = response.data.authRole;
+
+        localStorage.setItem("Authorization", jwtToken);
+        localStorage.setItem("email", jwtMemberEmail);
+        localStorage.setItem("name", jwtMemberName);
+        localStorage.setItem("authRole", jwtAuthRole);
+        localStorage.setItem("isLogin", "true");
+      })
       .then(window.location.replace("/genreselect"))
+      // .then(window.location.replace("/"))
       // .then((response) => {})
       .catch((err) => {
         console.error(err.message);
@@ -50,34 +79,71 @@ const RegisterScreen = () => {
       setMember({ ...member, gender: 2 });
     }
   }
-  const [emailError, setEmailError] = useState(""); // 이메일 유효성 검사 결과 상태
 
-  const handleValueChange = (e) => {
-    const { name, value } = e.target;
+  const idcheck = async (e) => {
+    console.log(e.target.value);
 
+    await axios
+      .post(
+        `http://localhost:8090/emailcheck`,
+        { email: e.target.value },
+        config
+      )
+      .then((response) => {
+        console.log(response.data);
+
+        setCount(response.data);
+        setIsvalid(validateEmail(e.target.value));
+      })
+
+      .catch((error) => console.error(error));
+  };
+  const handleValueChange = async (e) => {
     // 이메일 필드에 대한 유효성 검사와 중복 확인
-    if (name === "email") {
+    if (e.target.name === "email") {
       // 이메일 형식이 올바른지 검사
-      const emailRegex = /\S+@\S+\.\S+/;
-      if (!emailRegex.test(value)) {
-        setEmailError("유효한 이메일 주소를 입력해주세요.");
-        return;
-      }
 
-      // 서버로 이메일 중복 확인 요청 보내기
-      fetch(`/api/check-email?email=${value}`, config)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.exists) {
-            setEmailError("이미 등록된 이메일입니다.");
-          } else {
-            setEmailError("");
-          }
-        })
-        .catch((error) => console.error(error));
+      console.log(isvalid);
     }
 
+    // 서버로 이메일 중복 확인 요청 보내기
+
     setMember({ ...member, [e.target.name]: e.target.value });
+  };
+
+  const [passwordCheck, setPasswordCheck] = useState("");
+
+  const passChang = (e) => {
+    e.preventDefault();
+    if (password !== e.target.value)
+      setPasswordCheck(
+        <span
+          style={{
+            // textShadow: "0 0 10px white",
+            // color: "red",
+            color: "rgb(255,171, 154)",
+            animation: "glow 1s ease-in-out infinite",
+            fontWeight: "bold",
+          }}
+        >
+          비밀번호 불일치
+        </span>
+      );
+    else
+      setPasswordCheck(
+        <span
+          style={{
+            // color: "rgb(250,580, 500)",
+            color: "rgb(170,255, 0)",
+            // color: "green",
+            textShadow: "0 0 10px white",
+            animation: "glow 1s ease-in-out infinite",
+            fontWeight: "bold",
+          }}
+        >
+          비밀번호 일치
+        </span>
+      );
   };
 
   return (
@@ -124,6 +190,7 @@ const RegisterScreen = () => {
                       className="text-input"
                       type="text"
                       name="name"
+                      value={name}
                       onChange={handleValueChange}
                     ></input>
                   </div>
@@ -143,10 +210,46 @@ const RegisterScreen = () => {
                     className="text-input"
                     type="text"
                     name="email"
+                    value={email}
                     onChange={handleValueChange}
+                    onBlur={idcheck}
                   ></input>
-                  {emailError && <div>{emailError}</div>}
-                  {!emailError && <div>사용 가능한 이메일입니다.</div>}
+                  {!isvalid && (
+                    <div
+                      style={{
+                        color: "rgb(255,171, 154)",
+                        animation: "glow 1s ease-in-out infinite",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      유효하지 않은 이메일입니다.
+                    </div>
+                  )}
+                  {/* color: "lightGreen" */}
+                  {isvalid && count === 0 && (
+                    <div
+                      style={{
+                        color: "rgb(170,255, 0)",
+                        textShadow: "0 0 10px white",
+                        animation: "glow 1s ease-in-out infinite",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      사용 가능한 이메일입니다.
+                    </div>
+                  )}
+                  {count === 1 && (
+                    <span
+                      style={{
+                        color: "rgb(255,171, 154)",
+                        animation: "glow 1s ease-in-out infinite",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {" "}
+                      중복입니다.{" "}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <p
@@ -160,8 +263,9 @@ const RegisterScreen = () => {
                   </p>
                   <input
                     className="text-input-pw"
-                    type="password"
+                    type="text"
                     name="password"
+                    value={password}
                     onChange={handleValueChange}
                   ></input>
                 </div>
@@ -171,10 +275,11 @@ const RegisterScreen = () => {
                   </p>
                   <input
                     className="text-input-pw"
-                    type="password"
-                    name="password"
-                    onChange={handleValueChange}
+                    type="text"
+                    name="password2"
+                    onChange={passChang}
                   ></input>
+                  <span>{passwordCheck}</span>
                 </div>
                 <input
                   onClick={handleNextClick}
@@ -211,6 +316,7 @@ const RegisterScreen = () => {
                       className="text-input"
                       type="text"
                       name="age"
+                      value={age}
                       onChange={handleValueChange}
                     ></input>
                   </div>
@@ -231,6 +337,7 @@ const RegisterScreen = () => {
                         type="select"
                         name="select"
                         id="exampleSelect1"
+                        value={gender}
                         style={{ height: "35px" }}
                         onChange={handleSelect}
                       >
