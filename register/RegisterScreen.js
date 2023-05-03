@@ -1,8 +1,6 @@
 import { useRef, useState } from "react";
 import "../../assets/css/RegisterScreen.css";
 import { FormGroup, Input, Label } from "reactstrap";
-import Modal from "react-modal";
-
 import axios from "axios";
 import { baseUrl } from "../../Apiurl";
 
@@ -12,7 +10,6 @@ const RegisterScreen = () => {
   const [position, setPosition] = useState(0);
   const [count, setCount] = useState(3);
   const [isvalid, setIsvalid] = useState();
-  const [showModal, setShowModal] = useState(false);
   // const navigator = useNavigate();
   const [member, setMember] = useState({
     email: "",
@@ -21,16 +18,6 @@ const RegisterScreen = () => {
     age: "",
     gender: "",
   });
-
-  function Modal(props) {
-    return (
-      <div className="modal-layer">
-        <div className="modal-container">
-          <div className="modal-content">{props.children}</div>
-        </div>
-      </div>
-    );
-  }
 
   const { password, email, name, age, gender } = member;
   const validateEmail = (email) => {
@@ -696,24 +683,7 @@ const RegisterScreen = () => {
                   onMouseOut={(e) =>
                     (e.target.style.backgroundColor = "#e75757")
                   }
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (!age || !email || !password || !name || !gender) {
-                      setShowModal(true);
-                    } else {
-                      // 필드가 모두 채워져 있을 때 회원가입 처리
-                      submitHandler();
-                    }
-                  }}
                 ></input>
-                {showModal && (
-                  <Modal style={{ backgroundColor: "red" }}>
-                    <div>
-                      <p>필드가 채워지지 않았습니다.</p>
-                      <button onClick={() => setShowModal(false)}>확인</button>
-                    </div>
-                  </Modal>
-                )}
               </div>
             </div>
           </FormGroup>
